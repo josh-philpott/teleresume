@@ -1,0 +1,61 @@
+from flask import Flask, request, redirect
+import twilio.twiml
+ 
+app = Flask(__name__)
+ 
+# Try adding your own number to this list!
+
+@app.route("/", methods=['GET', 'POST'])
+def hello_monkey():
+	# Get the caller's phone number from the incoming Twilio request
+	from_number = request.values.get('From', None)
+	resp = twilio.twiml.Response()
+ 
+	#Play introduction
+	#resp.play("http://k007.kiwi6.com/hotlink/iy4c9y61en/response.mp3")
+
+	#Play menu
+	 # Say a command, and listen for the caller to press a key. When they press
+	# a key, redirect them to /handle-key.
+	resp = menu()
+	return str(resp)
+
+def menu():
+	resp = twilio.twiml.Response()
+	with resp.gather(numDigits=1, action="/handle-key", method="POST", timeout=10) as g:
+		g.say("To call Josh's cell phone and offer him an internship,\
+			   press 0 at any time. To here why I would be the best candidate\
+			   for this experience, press 1. To here about my experience\
+			   interning with NASA, press 2. For education and relevant \
+			   courses, press 3. To here about some of my projects, press 4.")
+	resp.redirect("/")
+	return resp
+ 
+@app.route("/handle-key", methods=['GET', 'POST'])
+def handle_key():
+	"""Handle key press from a user."""
+	resp = twilio.twiml.Response()
+	# Get the digit pressed by the user
+	digit_pressed = request.values.get('Digits', None)
+	if digit_pressed == "0":
+		# Dial  - connect that number to the incoming caller.
+		resp.dial("+13863169856") #delete this before commit
+		# If the dial fails:
+		resp.say("Sorry! Josh was unavailable to take your call. The system will email him and let him know you attempted!")
+	elif digit_pressed == "1":
+		resp.say("put why I would be a good candidate here")
+	elif digit_pressed == "2":
+		resp.say("put nasa experience here!")
+	elif digit_pressed == "3":
+		resp.say("put general education information here!")
+	elif digit_pressed == "4":
+		resp.say("put projet information here")		
+	# If the caller pressed anything but 1, redirect them to the homepage.
+	else:
+		return redirect("/")
+	return str(resp)
+
+
+
+if __name__ == "__main__":
+	app.run(debug=True)
