@@ -1,5 +1,3 @@
-# This Python file uses the following encoding: utf-8
-
 from flask import Flask, request, redirect, url_for
 import twilio.twiml
 import smtplib
@@ -69,7 +67,7 @@ Joshua Philpott\njphil529@gmail.com\n(386)316-9856\nComputer Engineering, Univer
 		"Application to Product Management Internship - Summer 2014 - Joshua Philpott",
 		body,
 		"joshuaphilpott.pdf")
-		resp.sms("Joshua Philpott's resume has been sent to " + str(eml) +". Thank you for your consideration!")
+		resp.sms("Joshua Philpott's resume has been sent to" + str(eml) +". Thank you for your consideration!")
 		
 	else:
 		#Play introduction
