@@ -21,34 +21,7 @@ WOMAN_URL = "http://k007.kiwi6.com/hotlink/tru647ykao/woman.mp3"
 gmail_user = passpack.gmail_email
 gmail_pwd = passpack.gmail_password
 
-
-
-def mail(to, subject, text, attach):
-   msg = MIMEMultipart()
-
-   msg['From'] = gmail_user
-   msg['To'] = to
-   msg['Subject'] = subject
-
-   msg.attach(MIMEText(text))
-
-   part = MIMEBase('application', 'octet-stream')
-   part.set_payload(open(attach, 'rb').read())
-   Encoders.encode_base64(part)
-   part.add_header('Content-Disposition',
-           'attachment; filename="%s"' % os.path.basename(attach))
-   msg.attach(part)
-
-   mailServer = smtplib.SMTP("smtp.gmail.com", 587)
-   mailServer.ehlo()
-   mailServer.starttls()
-   mailServer.ehlo()
-   mailServer.login(gmail_user, gmail_pwd)
-   mailServer.sendmail(gmail_user, to, msg.as_string())
-   # Should be mailServer.quit(), but that crashes...
-   mailServer.close()
-
-@app.route("/intro", methods=['GET', 'POST'])
+@app.route("/", methods=['GET', 'POST'])
 def hello_monkey():
 	# Get the caller's phone number from the incoming Twilio request
 	from_number = request.values.get('From', None)
@@ -155,6 +128,31 @@ def handle_key():
 		resp.play(PROJECTS_URL)	
 	resp.redirect("/menu")	
 	return str(resp)
+	
+def mail(to, subject, text, attach):
+   msg = MIMEMultipart()
+
+   msg['From'] = gmail_user
+   msg['To'] = to
+   msg['Subject'] = subject
+
+   msg.attach(MIMEText(text))
+
+   part = MIMEBase('application', 'octet-stream')
+   part.set_payload(open(attach, 'rb').read())
+   Encoders.encode_base64(part)
+   part.add_header('Content-Disposition',
+           'attachment; filename="%s"' % os.path.basename(attach))
+   msg.attach(part)
+
+   mailServer = smtplib.SMTP("smtp.gmail.com", 587)
+   mailServer.ehlo()
+   mailServer.starttls()
+   mailServer.ehlo()
+   mailServer.login(gmail_user, gmail_pwd)
+   mailServer.sendmail(gmail_user, to, msg.as_string())
+   # Should be mailServer.quit(), but that crashes...
+   mailServer.close()
 		
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
