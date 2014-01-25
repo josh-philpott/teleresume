@@ -28,7 +28,7 @@ def hello_monkey():
 	
 	# Create a Response object to send back to Twilio
 	resp = twilio.twiml.Response()
-	#body = ""
+	body = ""
 	eml = request.values.get('Body', "")
 	
 	if (eml != ""):
@@ -56,7 +56,6 @@ Joshua Philpott\njphil529@gmail.com\n(386)316-9856\nComputer Engineering, Univer
 		#Redirect to menu after the introduction
 		resp.redirect("/menu")
 		#return the response to Twilio.
-	print body
 	return str(resp)
 
 @app.route("/menu", methods=['GET', 'POST'])
@@ -156,4 +155,4 @@ def mail(to, subject, text, attach):
 		
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
-    app.run(host='0.0.0.0', port=port)
+    app.run(host='127.0.0.1', port=port,debug=True)
