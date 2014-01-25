@@ -50,7 +50,7 @@ def mail(to, subject, text, attach):
    # Should be mailServer.quit(), but that crashes...
    mailServer.close()
 
-@app.route("/", methods=['GET', 'POST'])
+@app.route("/intro", methods=['GET', 'POST'])
 def hello_monkey():
 	# Get the caller's phone number from the incoming Twilio request
 	from_number = request.values.get('From', None)
@@ -160,5 +160,5 @@ def handle_key():
 		
 if __name__ == "__main__":
 	port = int(os.environ.get("PORT", 5000))
-	app.run(host='0.0.0.0', port=port)
+	app.run(debug=True, port=port)
 	
