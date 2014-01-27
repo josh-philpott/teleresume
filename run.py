@@ -6,10 +6,9 @@ from email.MIMEMultipart import MIMEMultipart
 from email.MIMEBase import MIMEBase
 from email.MIMEText import MIMEText
 from email import Encoders
-import passpack #so my credentials aren't displayed on github!
  
 app = Flask(__name__)
-INTRO_URL = "http://k007.kiwi6.com/hotlink/te39eptrpt/intro.mp3"
+INTRO_URL = "static/intro.mp3"#"http://k007.kiwi6.com/hotlink/te39eptrpt/intro.mp3"
 MENU_URL = "http://k007.kiwi6.com/hotlink/evgbxp77on/menu.mp3"
 NASA_URL = "http://k007.kiwi6.com/hotlink/7f6277e67d/NASA.mp3"
 PROJECTS_URL = "http://k007.kiwi6.com/hotlink/frxam9caf9/projects.mp3"
@@ -18,8 +17,8 @@ CLASSES_URL = "http://k007.kiwi6.com/hotlink/9rahflylrt/classes.mp3"
 WOMAN_URL = "http://k007.kiwi6.com/hotlink/tru647ykao/woman.mp3"
 # Try adding your own number to this list!
 
-gmail_user = passpack.gmail_email
-gmail_pwd = passpack.gmail_password
+gmail_user = os.environ["GMAIL_USER"] 
+gmail_pwd = os.environ["GMAIL_SECRET"]
 
 @app.route("/", methods=['GET', 'POST'])
 def hello_monkey():
@@ -39,7 +38,7 @@ Joshua Philpott\njphil529@gmail.com\n(386)316-9856\nComputer Engineering, Univer
 		mail("jphil529@gmail.com",
 		"Application to Product Management Internship - Summer 2014 - Joshua Philpott",
 		body,
-		"joshuaphilpott.pdf")
+		"static/joshuaphilpott.pdf")
 		resp.sms("Joshua Philpott's resume has been sent to " + str(eml) +". Thank you for your consideration!")
 		
 	else:
@@ -81,7 +80,7 @@ def handle_key():
 	digit_pressed = request.values.get('Digits', None)
 	if digit_pressed == "0":
 		# Dial  - connect that number to the incoming caller.
-		resp.dial(passpack.cellphone) 
+		resp.dial(os.environ["CELL"]) 
 		# If the dial fails:
 		resp.say("Sorry! Josh was unavailable to take your call. The system will email him and let him know you attempted!")
 	elif digit_pressed == "1":
