@@ -35,7 +35,7 @@ def hello_monkey():
 I have attached my resume and cover letter to this email. I hope you enjoyed my telephone resume!\n\n\
 Joshua Philpott\njphil529@gmail.com\n(386)316-9856\nComputer Engineering, University of South Florida\nUSRP Grant Recipient 2013"
 
-		mail("jphil529@gmail.com",
+		mail(str(eml),
 		"Application to Product Management Internship - Summer 2014 - Joshua Philpott",
 		body,
 		"static/joshuaphilpott.pdf")
